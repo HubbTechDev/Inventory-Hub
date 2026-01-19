@@ -117,7 +117,7 @@ export const DashboardScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Scraping Jobs</Text>
+        <Text style={styles.sectionTitle}>Upload Jobs</Text>
         
         <StatsCard
           title="Total Jobs"
