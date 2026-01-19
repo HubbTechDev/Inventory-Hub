@@ -6,6 +6,7 @@ from dataclasses import dataclass, asdict
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 import json
+import csv
 
 
 @dataclass
@@ -76,8 +77,6 @@ class InventoryCollection:
     
     def save_to_csv(self, filepath: str):
         """Save the collection to a CSV file."""
-        import csv
-        
         if not self.items:
             return
         

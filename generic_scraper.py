@@ -71,7 +71,7 @@ class GenericEcommerceScraper(BaseScraper):
         price_match = re.search(r'(\d+(?:\.\d{2})?)', cleaned_text)
         if price_match:
             try:
-                return float(price_match.group())
+                return float(price_match.group(1))
             except ValueError:
                 return None
         return None
