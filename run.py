@@ -35,8 +35,8 @@ if __name__ == '__main__':
     
     # Run the app
     print(f"✓ Starting Inventory Hub on http://localhost:{app.config['PORT']}")
-    print("✓ Frontend: http://localhost:{}/".format(app.config['PORT']))
-    print("✓ API: http://localhost:{}/api/".format(app.config['PORT']))
+    print(f"✓ Frontend: http://localhost:{app.config['PORT']}/")
+    print(f"✓ API: http://localhost:{app.config['PORT']}/api/")
     
     app.run(
         host=app.config['HOST'],

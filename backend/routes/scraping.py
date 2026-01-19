@@ -6,6 +6,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from backend.models import db, ScrapingJob
 from backend.services.scraper_service import start_scraping_task
+from backend.utils.validation import validate_url, sanitize_string
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,6 +23,10 @@ def list_scraping_jobs():
         
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 20, type=int)
+        
+        # Validate pagination
+        page = max(1, page)
+        per_page = max(1, min(per_page, 100))
         
         pagination = ScrapingJob.query.filter_by(user_id=user_id)\
             .order_by(ScrapingJob.created_at.desc())\
@@ -71,9 +76,22 @@ def start_scraping():
         if not data or not data.get('url'):
             return jsonify({'error': 'URL is required'}), 400
         
-        url = data['url']
-        merchant = data.get('merchant', 'Generic')
+        url = sanitize_string(data['url'], 1000)
+        
+        # Validate URL
+        if not validate_url(url):
+            return jsonify({'error': 'Invalid URL format'}), 400
+        
+        merchant = sanitize_string(data.get('merchant', 'Generic'), 100)
         pages = data.get('pages', 1)
+        
+        # Validate pages
+        try:
+            pages = int(pages)
+            if pages < 1 or pages > 10:
+                return jsonify({'error': 'Pages must be between 1 and 10'}), 400
+        except (ValueError, TypeError):
+            return jsonify({'error': 'Invalid pages value'}), 400
         
         # Create scraping job
         job = ScrapingJob(

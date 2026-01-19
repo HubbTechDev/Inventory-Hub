@@ -51,6 +51,9 @@ def start_scraping_task(job_id, user_id, url, merchant, pages=1):
                 collection = scraper.scrape_multiple_pages(url, max_pages=pages)
             else:
                 items = scraper.scrape_listing(url)
+                # Import from root models module
+                import sys
+                sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
                 from models import InventoryCollection
                 collection = InventoryCollection()
                 collection.add_items(items)

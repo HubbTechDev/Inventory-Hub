@@ -5,6 +5,7 @@ Authentication routes.
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from backend.models import db, User
+from backend.utils.validation import validate_email, validate_username, validate_password, sanitize_string
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,19 +23,37 @@ def register():
         if not data or not data.get('username') or not data.get('email') or not data.get('password'):
             return jsonify({'error': 'Missing required fields'}), 400
         
+        # Sanitize inputs
+        username = sanitize_string(data['username'], 50)
+        email = sanitize_string(data['email'], 120)
+        password = data['password']
+        
+        # Validate username
+        if not validate_username(username):
+            return jsonify({'error': 'Username must be 3-50 characters and contain only letters, numbers, and underscores'}), 400
+        
+        # Validate email
+        if not validate_email(email):
+            return jsonify({'error': 'Invalid email format'}), 400
+        
+        # Validate password
+        is_valid, error_msg = validate_password(password)
+        if not is_valid:
+            return jsonify({'error': error_msg}), 400
+        
         # Check if user already exists
-        if User.query.filter_by(username=data['username']).first():
+        if User.query.filter_by(username=username).first():
             return jsonify({'error': 'Username already exists'}), 409
         
-        if User.query.filter_by(email=data['email']).first():
+        if User.query.filter_by(email=email).first():
             return jsonify({'error': 'Email already exists'}), 409
         
         # Create new user
         user = User(
-            username=data['username'],
-            email=data['email']
+            username=username,
+            email=email
         )
-        user.set_password(data['password'])
+        user.set_password(password)
         
         db.session.add(user)
         db.session.commit()
@@ -66,10 +85,14 @@ def login():
         if not data or not data.get('username') or not data.get('password'):
             return jsonify({'error': 'Missing username or password'}), 400
         
-        # Find user
-        user = User.query.filter_by(username=data['username']).first()
+        # Sanitize username
+        username = sanitize_string(data['username'], 50)
+        password = data['password']
         
-        if not user or not user.check_password(data['password']):
+        # Find user
+        user = User.query.filter_by(username=username).first()
+        
+        if not user or not user.check_password(password):
             return jsonify({'error': 'Invalid credentials'}), 401
         
         # Create access token

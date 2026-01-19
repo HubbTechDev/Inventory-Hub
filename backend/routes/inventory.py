@@ -5,6 +5,7 @@ Inventory management routes.
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from backend.models import db, DBInventoryItem
+from backend.utils.validation import sanitize_string
 from sqlalchemy import or_, and_
 import logging
 
@@ -121,13 +122,47 @@ def update_inventory_item(item_id):
         if not item:
             return jsonify({'error': 'Item not found'}), 404
         
-        # Update allowed fields
-        allowed_fields = ['title', 'price', 'quantity', 'description', 'notes', 
-                         'tags', 'is_sold', 'condition', 'in_stock', 'category', 'brand']
+        # Update allowed fields with sanitization
+        if 'title' in data:
+            item.title = sanitize_string(data['title'], 500)
         
-        for field in allowed_fields:
-            if field in data:
-                setattr(item, field, data[field])
+        if 'price' in data:
+            try:
+                item.price = float(data['price'])
+            except (ValueError, TypeError):
+                return jsonify({'error': 'Invalid price value'}), 400
+        
+        if 'quantity' in data:
+            try:
+                item.quantity = int(data['quantity'])
+            except (ValueError, TypeError):
+                return jsonify({'error': 'Invalid quantity value'}), 400
+        
+        if 'description' in data:
+            item.description = sanitize_string(data['description'], 5000)
+        
+        if 'notes' in data:
+            item.notes = sanitize_string(data['notes'], 5000)
+        
+        if 'tags' in data:
+            item.tags = sanitize_string(data['tags'], 500)
+        
+        if 'is_sold' in data:
+            item.is_sold = bool(data['is_sold'])
+        
+        if 'condition' in data:
+            condition = sanitize_string(data['condition'], 50)
+            if condition in ['new', 'used', 'like new', 'refurbished']:
+                item.condition = condition
+        
+        if 'in_stock' in data:
+            item.in_stock = bool(data['in_stock'])
+        
+        if 'category' in data:
+            item.category = sanitize_string(data['category'], 100)
+        
+        if 'brand' in data:
+            item.brand = sanitize_string(data['brand'], 100)
         
         db.session.commit()
         
