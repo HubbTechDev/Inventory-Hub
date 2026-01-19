@@ -56,3 +56,17 @@ venv/
 instance/
 *.db
 __pycache__/
+
+# React Native / Expo
+mobile/node_modules/
+mobile/.expo/
+mobile/.expo-shared/
+mobile/dist/
+mobile/npm-debug.*
+mobile/yarn-error.log
+mobile/yarn.lock
+mobile/package-lock.json
+mobile/.env
+mobile/android/
+mobile/ios/
+mobile/web-build/
