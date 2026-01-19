@@ -7,7 +7,8 @@ from unittest.mock import Mock, patch, MagicMock
 import sys
 import os
 
-# Add parent directory to path
+# Add parent directory to path to import project modules
+# This is necessary when running tests from within the tests directory
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from mercari_scraper import MercariScraper

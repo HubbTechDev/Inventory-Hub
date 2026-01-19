@@ -5,7 +5,8 @@ Example: Using the scraper programmatically.
 import sys
 import os
 
-# Add parent directory to path to import modules
+# Add parent directory to path to import project modules
+# This is necessary for examples to import from the parent directory
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from generic_scraper import GenericEcommerceScraper

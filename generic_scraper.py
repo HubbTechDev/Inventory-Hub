@@ -6,6 +6,7 @@ This serves as an example implementation that can be customized for specific mer
 import re
 from typing import List, Optional
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 from scraper import BaseScraper
 from models import InventoryItem, InventoryCollection
@@ -186,7 +187,6 @@ class GenericEcommerceScraper(BaseScraper):
                     product_url = link.get('href')
                     if product_url and not product_url.startswith('http'):
                         # Handle relative URLs
-                        from urllib.parse import urljoin
                         product_url = urljoin(page_url, product_url)
                     
                     if product_url:
