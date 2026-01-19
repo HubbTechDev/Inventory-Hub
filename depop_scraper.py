@@ -31,8 +31,9 @@ class DepopScraper(BaseScraper):
         if not price_text:
             return None
         
-        # Handle various currency formats (£, $, €)
-        price_match = re.search(r'[£$€]?\s*(\d+(?:,\d{3})*(?:\.\d{2})?)', price_text.replace(',', ''))
+        # Remove currency symbols and commas, then extract numbers
+        cleaned_text = price_text.replace(',', '').replace('£', '').replace('$', '').replace('€', '')
+        price_match = re.search(r'(\d+(?:\.\d{2})?)', cleaned_text)
         if price_match:
             try:
                 return float(price_match.group(1))
@@ -60,13 +61,12 @@ class DepopScraper(BaseScraper):
             return None
         
         size_text = size_text.strip()
-        # Common size patterns
-        if re.search(r'\b(XS|S|M|L|XL|XXL)\b', size_text, re.IGNORECASE):
-            return size_text
-        if re.search(r'\b\d+\b', size_text):  # Numeric sizes
+        
+        # Return size if it contains common patterns or any text
+        if size_text:
             return size_text
         
-        return size_text if size_text else None
+        return None
     
     def scrape_listing(self, url: str) -> List[InventoryItem]:
         """

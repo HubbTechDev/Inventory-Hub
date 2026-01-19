@@ -66,8 +66,9 @@ class GenericEcommerceScraper(BaseScraper):
         if not price_text:
             return None
         
-        # Remove currency symbols and extract numbers
-        price_match = re.search(r'[\d,]+\.?\d*', price_text.replace(',', ''))
+        # Remove currency symbols and commas, then extract numbers
+        cleaned_text = price_text.replace(',', '').replace('$', '').replace('£', '').replace('€', '')
+        price_match = re.search(r'(\d+(?:\.\d{2})?)', cleaned_text)
         if price_match:
             try:
                 return float(price_match.group())

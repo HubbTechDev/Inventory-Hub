@@ -6,10 +6,12 @@ import argparse
 import logging
 import os
 from pathlib import Path
+from datetime import datetime
 
 from generic_scraper import GenericEcommerceScraper, CustomMerchantScraper
 from mercari_scraper import MercariScraper
 from depop_scraper import DepopScraper
+from models import InventoryCollection
 from config import OUTPUT_DIR, OUTPUT_FORMAT
 
 logging.basicConfig(
@@ -98,13 +100,11 @@ def main():
         else:
             logger.info(f"Scraping single listing from {args.url}")
             items = scraper.scrape_listing(args.url)
-            from models import InventoryCollection
             collection = InventoryCollection()
             collection.add_items(items)
         
         # Generate output filename if not provided
         if args.output is None:
-            from datetime import datetime
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
             filename = f"inventory_{args.merchant}_{timestamp}.{args.format}"
             output_path = output_dir / filename
