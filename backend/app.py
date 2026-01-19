@@ -85,14 +85,16 @@ def run_dev_server():
     print(f"\n{'='*60}")
     print(f"🚀 Inventory Hub API Server Starting")
     print(f"{'='*60}")
-    print(f"Environment: development")
+    print(f"Environment: {os.getenv('FLASK_ENV', 'production')}")
     print(f"Host: {host}")
     print(f"Port: {port}")
     print(f"API URL: http://{host}:{port}/api")
     print(f"Health Check: http://{host}:{port}/health")
     print(f"{'='*60}\n")
     
-    app.run(host=host, port=port, debug=True)
+    # Only enable debug mode in development environment
+    debug_mode = os.getenv('FLASK_ENV') == 'development'
+    app.run(host=host, port=port, debug=debug_mode)
 
 
 if __name__ == '__main__':
