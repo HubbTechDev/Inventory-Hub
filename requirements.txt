@@ -1,3 +1,4 @@
+# Existing scraping dependencies
 beautifulsoup4==4.12.2
 requests==2.31.0
 selenium==4.15.2
@@ -5,3 +6,20 @@ lxml==4.9.3
 webdriver-manager==4.0.1
 pandas==2.1.3
 python-dotenv==1.0.0
+
+# Flask and web framework
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.5
+Flask-CORS==4.0.0
+Flask-JWT-Extended==4.5.3
+
+# Database
+SQLAlchemy==2.0.23
+
+# Task queue (optional - for Celery)
+# celery==5.3.4
+# redis==5.0.1
+
+# Additional utilities
+Werkzeug==3.0.1

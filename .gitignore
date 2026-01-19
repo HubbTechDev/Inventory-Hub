@@ -52,3 +52,22 @@ scraped_data/
 # OS
 .DS_Store
 Thumbs.db
+
+# Flask/Backend
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+
+# Node/Frontend
+node_modules/
+frontend/build/
+frontend/dist/
+frontend/.next/
+frontend/.cache/
+
+# Docker
+docker-compose.override.yml

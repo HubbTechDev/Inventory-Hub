@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://inventory_user:inventory_password@db/inventory_hub
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - JWT_SECRET_KEY=jwt-secret-key-change-in-production
+      - DEBUG=True
+    volumes:
+      - .:/app
+      - inventory-data:/app/scraped_data
+    command: python -m flask run --host=0.0.0.0
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=inventory_user
+      - POSTGRES_PASSWORD=inventory_password
+      - POSTGRES_DB=inventory_hub
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Optional: Redis for Celery (if implementing background tasks)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+
+  # Optional: Celery worker (if implementing background tasks)
+  # celery:
+  #   build: .
+  #   command: celery -A backend.tasks worker --loglevel=info
+  #   depends_on:
+  #     - redis
+  #     - db
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0
+  #     - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  #     - DATABASE_URL=postgresql://inventory_user:inventory_password@db/inventory_hub
+  #   volumes:
+  #     - .:/app
+
+volumes:
+  postgres-data:
+  inventory-data:
