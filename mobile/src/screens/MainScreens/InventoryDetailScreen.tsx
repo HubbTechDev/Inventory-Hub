@@ -164,7 +164,7 @@ export const InventoryDetailScreen: React.FC<{ route: any; navigation: any }> = 
           
           {item.scraped_at && (
             <View style={styles.row}>
-              <Text style={styles.label}>Scraped:</Text>
+              <Text style={styles.label}>Uploaded:</Text>
               <Text style={styles.value}>{formatDateTime(item.scraped_at)}</Text>
             </View>
           )}
