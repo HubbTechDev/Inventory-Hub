@@ -69,5 +69,13 @@ frontend/dist/
 frontend/.next/
 frontend/.cache/
 
+# Mobile
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/.env
+mobile/npm-debug.*
+mobile/yarn-error.log
+
 # Docker
 docker-compose.override.yml

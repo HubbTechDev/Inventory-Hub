@@ -1,4 +1,7 @@
-# Inventory Hub Mobile App
+# Inventory-Hub Mobile App
+
+> **Note:** This mobile app requires the Inventory-Hub backend API to be running. 
+> See the [backend documentation](../backend/README.md) for setup instructions.
 
 A complete React Native (Expo) mobile application for managing your e-commerce inventory across multiple platforms. Connect to the Flask backend API to track items, scrape marketplaces, and analyze your inventory with ease.
 
