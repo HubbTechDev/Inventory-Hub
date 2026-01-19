@@ -1,24 +1,50 @@
 # Inventory-Hub
 
-A flexible web scraping application designed to extract inventory data from merchant app listings that don't have public APIs. This tool allows you to scrape product information from various e-commerce platforms and export the data in JSON or CSV format.
+A full-featured web application for scraping, managing, and analyzing inventory data from merchant platforms like Mercari and Depop. This tool provides a complete user experience with a web interface, RESTful API, and powerful scraping capabilities.
 
-## Features
+## 🌟 Features
 
-- 🔍 **Flexible Web Scraping**: Scrape inventory data from various merchant platforms
+### Web Scraping
+- 🔍 **Flexible Web Scraping**: Extract inventory data from various merchant platforms
 - 🛍️ **Specialized Scrapers**: Built-in support for **Mercari** and **Depop** marketplaces
 - 🎯 **Customizable Selectors**: Configure CSS selectors for different website structures
 - 🚀 **JavaScript Support**: Use Selenium for dynamic, JavaScript-rendered content
-- 📊 **Multiple Output Formats**: Export data as JSON or CSV
 - 🔄 **Multi-page Scraping**: Automatically scrape multiple pages of listings
-- 🛡️ **Robust Error Handling**: Built-in retry logic and error recovery
-- 📝 **Structured Data Models**: Clean, structured inventory item data
 
-## Installation
+### Web Application
+- 🖥️ **Modern Web Interface**: Responsive dashboard for managing inventory
+- 📊 **Interactive Dashboard**: View statistics, charts, and recent items
+- 🔐 **User Authentication**: Secure login and registration with JWT tokens
+- 📈 **Analytics**: Track inventory by merchant, condition, and price ranges
+- 🔍 **Search & Filter**: Find items quickly with powerful filtering
+- 📤 **Export Capabilities**: Export inventory data to CSV or JSON
+
+### API & Backend
+- 🔌 **RESTful API**: Complete API for all operations
+- 💾 **Database Storage**: SQLite/PostgreSQL for persistent data
+- 🔒 **Secure**: Password hashing, JWT authentication, input validation
+- 📝 **Job Tracking**: Monitor scraping jobs and their status
+
+## 📋 Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Web Application Usage](#web-application-usage)
+- [API Documentation](#api-documentation)
+- [Command-Line Usage](#command-line-usage)
+- [Docker Deployment](#docker-deployment)
+- [Configuration](#configuration)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+
+## 🚀 Installation
 
 ### Prerequisites
 
 - Python 3.8 or higher
 - Chrome/Chromium browser (for Selenium support)
+- Node.js (optional, for frontend development)
 
 ### Setup
 
@@ -39,13 +65,176 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Create a `.env` file (optional):
+4. Create a `.env` file:
 ```bash
 cp .env.example .env
 # Edit .env with your preferred settings
 ```
 
-## Usage
+5. Initialize the database:
+```bash
+python -c "from backend.app import app; from backend.models import db; app.app_context().push(); db.create_all()"
+```
+
+## ⚡ Quick Start
+
+### Start the Web Application
+
+```bash
+# Set Flask app
+export FLASK_APP=backend.app:app  # On Windows: set FLASK_APP=backend.app:app
+
+# Run the Flask server
+flask run
+```
+
+Then open your browser to `http://localhost:5000` and access the frontend at `frontend/public/index.html`.
+
+### Using Docker
+
+```bash
+docker-compose up
+```
+
+The application will be available at `http://localhost:5000`.
+
+## 🖥️ Web Application Usage
+
+### 1. Register an Account
+- Navigate to the application in your browser
+- Click "Register" and create an account
+- You'll be automatically logged in
+
+### 2. Dashboard
+- View total inventory statistics
+- See charts showing items by merchant and condition
+- Review recently added items
+
+### 3. Scraping Interface
+- Click "Scraping" in the navigation menu
+- Enter a URL (e.g., `https://www.mercari.com/search/?keyword=shoes`)
+- Select the merchant platform (Mercari, Depop, or Generic)
+- Choose the number of pages to scrape
+- Click "Start Scraping"
+
+### 4. Inventory Management
+- Click "Inventory" to view all scraped items
+- Use filters to search by merchant, condition, or price
+- Click "Delete" to remove items
+- Export data to CSV for external analysis
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+
+#### Register User
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "secure_password"
+}
+```
+
+#### Login
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "password": "secure_password"
+}
+```
+
+Response includes `access_token` for subsequent requests.
+
+### Inventory Endpoints
+
+#### List Inventory
+```http
+GET /api/inventory?page=1&per_page=20&merchant=mercari
+Authorization: Bearer <token>
+```
+
+Query parameters:
+- `page`: Page number (default: 1)
+- `per_page`: Items per page (default: 20)
+- `merchant`: Filter by merchant
+- `condition`: Filter by condition
+- `min_price`: Minimum price
+- `max_price`: Maximum price
+- `search`: Search in title/description
+- `is_sold`: Filter by sold status
+
+#### Get Single Item
+```http
+GET /api/inventory/{id}
+Authorization: Bearer <token>
+```
+
+#### Update Item
+```http
+PUT /api/inventory/{id}
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "price": 29.99,
+  "is_sold": true
+}
+```
+
+#### Delete Item
+```http
+DELETE /api/inventory/{id}
+Authorization: Bearer <token>
+```
+
+### Scraping Endpoints
+
+#### Start Scraping Job
+```http
+POST /api/scraping/scrape
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "url": "https://www.mercari.com/search/?keyword=shoes",
+  "merchant": "mercari",
+  "pages": 3
+}
+```
+
+#### List Scraping Jobs
+```http
+GET /api/scraping/jobs?page=1
+Authorization: Bearer <token>
+```
+
+### Statistics Endpoints
+
+#### Get Dashboard Statistics
+```http
+GET /api/stats
+Authorization: Bearer <token>
+```
+
+Returns:
+- Total items and value
+- Items by merchant
+- Items by condition
+- Price distribution
+- Recent items
+- Scraping job statistics
+
+## 💻 Command-Line Usage
+
+You can still use the original CLI for quick scraping tasks:
 
 ### Basic Usage
 
@@ -77,9 +266,6 @@ python main.py "https://www.depop.com/username/" --merchant depop --pages 5
 ### Advanced Options
 
 ```bash
-# Scrape multiple pages with custom merchant name
-python main.py "https://example.com/category/electronics" --merchant "ExampleStore" --pages 5
-
 # Use Selenium for JavaScript-rendered content
 python main.py "https://example.com/products" --selenium --pages 3
 
@@ -88,199 +274,142 @@ python main.py "https://example.com/products" --format csv
 
 # Custom output file
 python main.py "https://example.com/products" --output my_inventory.json
-
-# Use custom CSS selectors
-python main.py "https://example.com/products" \
-  --title-selector "h1.product-name" \
-  --price-selector "span.price-value"
 ```
 
-### Command-Line Arguments
+## 🐳 Docker Deployment
 
-- `url`: URL to scrape (required)
-- `--merchant`: Merchant name (default: Generic)
-- `--pages`: Number of pages to scrape (default: 1)
-- `--selenium`: Use Selenium for JavaScript content
-- `--output`: Custom output file path
-- `--format`: Output format - json or csv (default: json)
-- `--title-selector`: CSS selector for product title
-- `--price-selector`: CSS selector for price
+### Using Docker Compose (Recommended)
 
-## Programmatic Usage
+```bash
+# Build and start all services
+docker-compose up -d
 
-You can also use Inventory Hub as a Python library:
+# View logs
+docker-compose logs -f
 
-### Using Mercari Scraper
-
-```python
-from mercari_scraper import MercariScraper
-
-# Create a Mercari scraper
-scraper = MercariScraper()
-
-# Scrape a single listing
-items = scraper.scrape_listing("https://www.mercari.com/us/item/m12345678/")
-
-# Scrape multiple pages
-collection = scraper.scrape_multiple_pages(
-    "https://www.mercari.com/search/?keyword=sneakers",
-    max_pages=3
-)
-
-# Save results
-collection.save_to_json("mercari_inventory.json")
-
-# Clean up
-scraper.cleanup()
+# Stop services
+docker-compose down
 ```
 
-### Using Depop Scraper
+### Using Docker Only
 
-```python
-from depop_scraper import DepopScraper
+```bash
+# Build image
+docker build -t inventory-hub .
 
-# Create a Depop scraper
-scraper = DepopScraper()
-
-# Scrape a single listing
-items = scraper.scrape_listing("https://www.depop.com/products/username-product-id/")
-
-# Scrape a shop's listings
-collection = scraper.scrape_multiple_pages(
-    "https://www.depop.com/username/",
-    max_pages=5
-)
-
-# Save results
-collection.save_to_json("depop_inventory.json")
-
-# Clean up
-scraper.cleanup()
+# Run container
+docker run -p 5000:5000 -v $(pwd)/scraped_data:/app/scraped_data inventory-hub
 ```
 
-### Using Generic Scraper
+## ⚙️ Configuration
 
-```python
-from generic_scraper import GenericEcommerceScraper
-from models import InventoryCollection
+Configuration is managed through environment variables in a `.env` file:
 
-# Create a scraper instance
-scraper = GenericEcommerceScraper(
-    merchant_name="MyStore",
-    title_selector="h1.product-title",
-    price_selector="span.price",
-    use_selenium=False
-)
+### Flask Settings
+- `SECRET_KEY`: Flask secret key (change in production!)
+- `JWT_SECRET_KEY`: JWT token secret (change in production!)
+- `DEBUG`: Enable debug mode (default: False)
+- `HOST`: Server host (default: 0.0.0.0)
+- `PORT`: Server port (default: 5000)
 
-# Scrape a single listing
-items = scraper.scrape_listing("https://example.com/product/123")
+### Database Settings
+- `DATABASE_URL`: Database connection string
+  - SQLite: `sqlite:///inventory_hub.db`
+  - PostgreSQL: `postgresql://user:password@localhost/inventory_hub`
 
-# Scrape multiple pages
-collection = scraper.scrape_multiple_pages(
-    "https://example.com/category/products",
-    max_pages=5
-)
+### Scraper Settings
+- `USER_AGENT`: User agent for requests
+- `REQUEST_TIMEOUT`: Request timeout in seconds
+- `MAX_RETRIES`: Maximum retry attempts
+- `USE_HEADLESS`: Run Selenium in headless mode
+- `PAGE_LOAD_TIMEOUT`: Selenium page load timeout
 
-# Save results
-collection.save_to_json("inventory.json")
-collection.save_to_csv("inventory.csv")
+See `.env.example` for all available options.
 
-# Clean up
-scraper.cleanup()
+## 🛠️ Development
+
+### Project Structure
+
+```
+inventory-hub/
+├── backend/                # Flask backend application
+│   ├── app.py             # Main Flask app
+│   ├── config.py          # Configuration settings
+│   ├── models.py          # Database models
+│   ├── routes/            # API endpoints
+│   │   ├── auth.py        # Authentication routes
+│   │   ├── inventory.py   # Inventory routes
+│   │   ├── scraping.py    # Scraping routes
+│   │   └── stats.py       # Statistics routes
+│   └── services/          # Business logic
+│       └── scraper_service.py
+├── frontend/              # Frontend application
+│   └── public/            # Static files
+│       ├── index.html     # Main HTML
+│       ├── style.css      # Styles
+│       └── app.js         # JavaScript application
+├── scrapers/              # Web scraping modules
+│   ├── scraper.py         # Base scraper
+│   ├── mercari_scraper.py
+│   ├── depop_scraper.py
+│   └── generic_scraper.py
+├── tests/                 # Test files
+├── migrations/            # Database migrations
+├── main.py                # CLI entry point
+├── models.py              # Data models
+├── config.py              # Scraper configuration
+├── requirements.txt       # Python dependencies
+├── Dockerfile             # Docker configuration
+├── docker-compose.yml     # Docker Compose configuration
+└── README.md              # This file
 ```
 
-## Creating Custom Scrapers
+### Running Tests
 
-For specific merchant platforms, you can create custom scrapers:
+```bash
+# Run all tests
+python -m pytest tests/
 
-```python
-from generic_scraper import GenericEcommerceScraper
+# Run specific test file
+python -m pytest tests/test_models.py
 
-class MyCustomScraper(GenericEcommerceScraper):
-    def __init__(self):
-        super().__init__(
-            merchant_name="CustomMerchant",
-            title_selector="h1.product-name",
-            price_selector="span.price-value",
-            description_selector="div.product-desc",
-            image_selector="img.main-product-image",
-            sku_selector="span.product-sku",
-            stock_selector="div.stock-info",
-            use_selenium=False
-        )
+# Run with coverage
+python -m pytest --cov=backend tests/
 ```
 
-## Data Structure
+### Database Migrations
 
-Each scraped inventory item contains the following fields:
+```bash
+# Initialize migrations (first time only)
+flask db init
 
-```python
-{
-    "title": "Product Name",
-    "price": 29.99,
-    "currency": "USD",
-    "quantity": null,
-    "sku": "PROD-123",
-    "description": "Product description...",
-    "category": null,
-    "brand": null,
-    "image_url": "https://example.com/image.jpg",
-    "product_url": "https://example.com/product/123",
-    "merchant": "ExampleStore",
-    "condition": "new",
-    "in_stock": true,
-    "scraped_at": "2026-01-19T12:44:29.000Z",
-    "custom_fields": null
-}
+# Create a migration
+flask db migrate -m "Description of changes"
+
+# Apply migrations
+flask db upgrade
 ```
 
-## Configuration
-
-Configuration can be set via environment variables in a `.env` file:
-
-- `USER_AGENT`: User agent string for requests
-- `REQUEST_TIMEOUT`: Request timeout in seconds (default: 30)
-- `MAX_RETRIES`: Maximum retry attempts (default: 3)
-- `RETRY_DELAY`: Delay between retries in seconds (default: 2)
-- `USE_HEADLESS`: Run Selenium in headless mode (default: True)
-- `PAGE_LOAD_TIMEOUT`: Selenium page load timeout (default: 30)
-- `OUTPUT_DIR`: Output directory for scraped data (default: scraped_data)
-- `OUTPUT_FORMAT`: Default output format - json or csv (default: json)
-- `LOG_LEVEL`: Logging level (default: INFO)
-
-## Best Practices
-
-1. **Respect robots.txt**: Always check and respect the website's robots.txt file
-2. **Rate Limiting**: Add delays between requests to avoid overwhelming servers
-3. **Legal Compliance**: Ensure you have permission to scrape the target website
-4. **Error Handling**: The scraper includes retry logic, but always monitor for errors
-5. **Custom Selectors**: Inspect the target website's HTML to identify correct selectors
-
-## Troubleshooting
-
-### Common Issues
-
-**Selenium not working:**
-- Ensure Chrome/Chromium is installed
-- The WebDriver will be automatically downloaded on first use
-
-**No items scraped:**
-- Check if the CSS selectors match the website's structure
-- Try using Selenium if the content is JavaScript-rendered
-- Check the logs for specific error messages
-
-**Permission denied:**
-- Ensure you have write permissions for the output directory
-- Check that the output directory exists
-
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
 
 This project is open source and available under the MIT License.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 This tool is for educational purposes. Always ensure you have permission to scrape websites and comply with their terms of service and robots.txt files. The developers are not responsible for misuse of this tool.
+
+## 🙏 Acknowledgments
+
+- Built with Flask, SQLAlchemy, and BeautifulSoup
+- Selenium WebDriver for dynamic content scraping
+- Special support for Mercari and Depop marketplaces

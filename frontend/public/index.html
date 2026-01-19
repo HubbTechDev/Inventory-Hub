@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login/Register Page -->
+        <div id="auth-page" class="page active">
+            <div class="container">
+                <div class="auth-container">
+                    <h1>Inventory Hub</h1>
+                    <div class="tabs">
+                        <button class="tab active" onclick="showLoginForm()">Login</button>
+                        <button class="tab" onclick="showRegisterForm()">Register</button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="login-form" class="auth-form active">
+                        <h2>Login</h2>
+                        <div class="form-group">
+                            <label for="login-username">Username</label>
+                            <input type="text" id="login-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div id="login-error" class="error-message"></div>
+                    </form>
+                    
+                    <!-- Register Form -->
+                    <form id="register-form" class="auth-form">
+                        <h2>Register</h2>
+                        <div class="form-group">
+                            <label for="register-username">Username</label>
+                            <input type="text" id="register-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <div id="register-error" class="error-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page">
+            <nav class="navbar">
+                <div class="nav-brand">Inventory Hub</div>
+                <div class="nav-menu">
+                    <a href="#" onclick="showDashboard()">Dashboard</a>
+                    <a href="#" onclick="showInventory()">Inventory</a>
+                    <a href="#" onclick="showScraping()">Scraping</a>
+                    <a href="#" onclick="logout()">Logout</a>
+                </div>
+            </nav>
+
+            <div class="container">
+                <!-- Dashboard Section -->
+                <div id="dashboard-section" class="section active">
+                    <h1>Dashboard</h1>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Items</h3>
+                            <p class="stat-value" id="stat-total-items">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Value</h3>
+                            <p class="stat-value" id="stat-total-value">$0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Sold Items</h3>
+                            <p class="stat-value" id="stat-sold-items">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Scraping Jobs</h3>
+                            <p class="stat-value" id="stat-scraping-jobs">0</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Items by Merchant</h3>
+                            <div id="merchant-chart"></div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Items by Condition</h3>
+                            <div id="condition-chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="recent-items">
+                        <h3>Recently Added Items</h3>
+                        <div id="recent-items-list"></div>
+                    </div>
+                </div>
+
+                <!-- Inventory Section -->
+                <div id="inventory-section" class="section">
+                    <h1>Inventory Management</h1>
+                    
+                    <div class="filters">
+                        <input type="text" id="search-input" placeholder="Search items...">
+                        <select id="merchant-filter">
+                            <option value="">All Merchants</option>
+                        </select>
+                        <select id="condition-filter">
+                            <option value="">All Conditions</option>
+                            <option value="new">New</option>
+                            <option value="used">Used</option>
+                            <option value="like new">Like New</option>
+                        </select>
+                        <button onclick="applyFilters()" class="btn btn-secondary">Apply Filters</button>
+                        <button onclick="exportInventory()" class="btn btn-secondary">Export CSV</button>
+                    </div>
+
+                    <div id="inventory-table-container">
+                        <table id="inventory-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Price</th>
+                                    <th>Merchant</th>
+                                    <th>Condition</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination" id="inventory-pagination"></div>
+                </div>
+
+                <!-- Scraping Section -->
+                <div id="scraping-section" class="section">
+                    <h1>Scrape Inventory</h1>
+                    
+                    <div class="scraping-form-container">
+                        <form id="scraping-form">
+                            <div class="form-group">
+                                <label for="scrape-url">URL to Scrape</label>
+                                <input type="url" id="scrape-url" placeholder="https://www.mercari.com/..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="scrape-merchant">Merchant Platform</label>
+                                <select id="scrape-merchant" required>
+                                    <option value="mercari">Mercari</option>
+                                    <option value="depop">Depop</option>
+                                    <option value="Generic">Generic</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="scrape-pages">Number of Pages</label>
+                                <input type="number" id="scrape-pages" value="1" min="1" max="10">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Start Scraping</button>
+                            <div id="scraping-message" class="message"></div>
+                        </form>
+                    </div>
+
+                    <h2>Scraping History</h2>
+                    <div id="scraping-jobs-container">
+                        <table id="scraping-jobs-table">
+                            <thead>
+                                <tr>
+                                    <th>URL</th>
+                                    <th>Merchant</th>
+                                    <th>Status</th>
+                                    <th>Items</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scraping-jobs-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
