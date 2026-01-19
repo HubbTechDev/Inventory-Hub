@@ -28,6 +28,44 @@ from generic_scraper import GenericEcommerceScraper
 scraping_bp = Blueprint('scraping', __name__, url_prefix='/api/scraping')
 
 
+def parse_scraped_datetime(timestamp_str):
+    """
+    Parse ISO format datetime string to UTC naive datetime.
+    
+    Args:
+        timestamp_str: ISO format datetime string (may include timezone)
+        
+    Returns:
+        datetime: UTC naive datetime object, or current UTC time on error
+    """
+    if not timestamp_str:
+        return datetime.utcnow()
+    
+    try:
+        # Handle ISO format with optional timezone
+        dt = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+        # Convert to UTC naive datetime for consistency
+        if dt.tzinfo is not None:
+            return dt.astimezone(timezone.utc).replace(tzinfo=None)
+        return dt
+    except (ValueError, TypeError, AttributeError):
+        logger.warning(f"Failed to parse datetime '{timestamp_str}', using current time")
+        return datetime.utcnow()
+
+
+def mark_job_failed(job, error_msg):
+    """
+    Mark a scraping job as failed with error message.
+    
+    Args:
+        job: ScrapingJob instance
+        error_msg: Error message string
+    """
+    job.status = 'failed'
+    job.error_message = error_msg
+    job.completed_at = datetime.utcnow()
+
+
 def get_scraper(merchant):
     """Get appropriate scraper for merchant."""
     merchant_lower = merchant.lower()
@@ -109,23 +147,9 @@ def start_scraping():
                     image_url=scraped_item.image_url,
                     product_url=scraped_item.product_url,
                     merchant=scraped_item.merchant,
-                    in_stock=scraped_item.in_stock
+                    in_stock=scraped_item.in_stock,
+                    scraped_at=parse_scraped_datetime(scraped_item.scraped_at)
                 )
-                
-                # Parse scraped_at timestamp safely
-                if scraped_item.scraped_at:
-                    try:
-                        # Parse ISO format datetime string
-                        dt = datetime.fromisoformat(scraped_item.scraped_at.replace('Z', '+00:00'))
-                        # Convert to UTC naive datetime for consistency
-                        if dt.tzinfo is not None:
-                            db_item.scraped_at = dt.astimezone(timezone.utc).replace(tzinfo=None)
-                        else:
-                            db_item.scraped_at = dt
-                    except (ValueError, TypeError, AttributeError):
-                        db_item.scraped_at = datetime.utcnow()
-                else:
-                    db_item.scraped_at = datetime.utcnow()
                 
                 # Handle custom fields
                 if scraped_item.custom_fields:
@@ -142,21 +166,15 @@ def start_scraping():
         except ImportError as e:
             error_msg = f"Scraper import error: {str(e)}"
             logger.error(f"Failed to import scraper: {traceback.format_exc()}")
-            job.status = 'failed'
-            job.error_message = error_msg
-            job.completed_at = datetime.utcnow()
+            mark_job_failed(job, error_msg)
         except (ConnectionError, TimeoutError) as e:
             error_msg = f"Network error during scraping: {str(e)}"
             logger.error(f"Scraping network error: {traceback.format_exc()}")
-            job.status = 'failed'
-            job.error_message = error_msg
-            job.completed_at = datetime.utcnow()
+            mark_job_failed(job, error_msg)
         except Exception as e:
             error_msg = f"Unexpected error: {str(e)}"
             logger.error(f"Scraping job {job.id} failed with exception: {traceback.format_exc()}")
-            job.status = 'failed'
-            job.error_message = error_msg
-            job.completed_at = datetime.utcnow()
+            mark_job_failed(job, error_msg)
         
         db.session.commit()
         

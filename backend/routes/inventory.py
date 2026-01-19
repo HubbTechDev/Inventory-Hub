@@ -171,13 +171,14 @@ def update_inventory_item(item_id):
         if not data:
             return jsonify({'error': 'No data provided'}), 400
         
-        # Update fields
-        updatable_fields = [
+        # Define allowed fields for update
+        updatable_fields = {
             'title', 'price', 'currency', 'quantity', 'sku', 
             'description', 'category', 'brand', 'condition',
             'image_url', 'product_url', 'merchant', 'in_stock'
-        ]
+        }
         
+        # Update only allowed fields that are present in request
         for field in updatable_fields:
             if field in data:
                 setattr(item, field, data[field])
