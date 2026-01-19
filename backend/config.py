@@ -21,7 +21,7 @@ class Config:
     # Database settings
     SQLALCHEMY_DATABASE_URI = os.getenv(
         'DATABASE_URL',
-        'sqlite:///inventory_hub.db'
+        f'sqlite:///{os.path.join(os.path.dirname(os.path.dirname(__file__)), "instance", "inventory_hub.db")}'
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
