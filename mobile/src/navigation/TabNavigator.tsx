@@ -74,7 +74,7 @@ export const TabNavigator = () => {
         options={{
           title: 'Upload',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="spider-web" size={size} color={color} />
+            <MaterialCommunityIcons name="upload" size={size} color={color} />
           ),
         }}
       />
