@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Inventory Hub",
+    "slug": "inventory-hub",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6200EE"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hubbtech.inventoryhub"
+    },
+    "android": {
+      "package": "com.hubbtech.inventoryhub",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    }
+  }
+}
