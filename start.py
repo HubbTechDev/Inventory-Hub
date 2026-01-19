@@ -9,6 +9,8 @@ import sys
 import subprocess
 import platform
 import webbrowser
+import time
+import threading
 from pathlib import Path
 
 def print_header():
@@ -76,7 +78,6 @@ def initialize_database(python_executable):
     subprocess.run([str(python_executable), "-c", code], check=True)
 
 def open_browser():
-    import time
     time.sleep(2)
     print("🌐 Opening browser...")
     webbrowser.open("http://localhost:5000")
@@ -91,7 +92,6 @@ def run_app(python_executable):
     print()
     
     # Open browser in background
-    import threading
     threading.Thread(target=open_browser, daemon=True).start()
     
     # Run the app
