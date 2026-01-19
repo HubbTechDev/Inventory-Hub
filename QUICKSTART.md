@@ -1,13 +1,90 @@
 # Quick Start Guide
 
-Get started with Inventory Hub in just a few minutes!
+## 🚀 Start in 30 Seconds
 
-## Prerequisites
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/HubbTechDev/Inventory-Hub.git
+cd Inventory-Hub
+```
 
-- Python 3.8 or higher
-- Chrome/Chromium browser (for web scraping)
+### Step 2: Run Quick Start Script
 
-## Installation
+**macOS/Linux:**
+```bash
+./quickstart.sh
+```
+
+**Windows:**
+```cmd
+quickstart.bat
+```
+
+**Cross-platform:**
+```bash
+python start.py
+```
+
+### Step 3: Use the App!
+
+The browser will open automatically to http://localhost:5000
+
+1. **Register** an account
+2. **Login** with your credentials
+3. **Start scraping** Mercari or Depop URLs
+4. **View inventory** in the dashboard
+
+## 📱 What the Script Does
+
+1. ✅ Checks Python version (3.8+ required)
+2. ✅ Creates virtual environment
+3. ✅ Installs dependencies
+4. ✅ Sets up configuration
+5. ✅ Creates database
+6. ✅ Starts web server
+7. ✅ Opens browser
+
+## 🔧 Troubleshooting
+
+### "Python not found"
+Install Python 3.8+ from https://python.org
+
+### "Permission denied" on macOS/Linux
+```bash
+chmod +x quickstart.sh
+```
+
+### Port 5000 already in use
+Edit `.env` and change `PORT=5000` to another port like `PORT=5001`
+
+### Dependencies fail to install
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+## 🛑 Stopping the Server
+
+Press `Ctrl+C` in the terminal
+
+## 🔄 Restarting
+
+Just run the quickstart script again:
+```bash
+./quickstart.sh  # or quickstart.bat or python start.py
+```
+
+## 📖 Next Steps
+
+- Read [API Documentation](API.md)
+- Check [Mobile App Setup](mobile/README.md)
+- See [Architecture Guide](ARCHITECTURE.md)
+
+---
+
+## 📚 Manual Installation (Alternative)
+
+If you prefer manual setup, follow these steps:
 
 1. **Clone the repository:**
    ```bash

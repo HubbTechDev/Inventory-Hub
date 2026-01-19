@@ -50,8 +50,8 @@ See [mobile/README.md](mobile/README.md) for iOS/Android app setup instructions.
 
 - [Architecture](#architecture)
 - [Mobile App](#mobile-app)
-- [Installation](#installation)
 - [Quick Start](#quick-start)
+- [Installation](#installation)
 - [Web Application Usage](#web-application-usage)
 - [API Documentation](#api-documentation)
 - [Command-Line Usage](#command-line-usage)
@@ -61,7 +61,39 @@ See [mobile/README.md](mobile/README.md) for iOS/Android app setup instructions.
 - [Contributing](#contributing)
 - [License](#license)
 
-## 🚀 Installation
+## ⚡ Quick Start (Easiest Way)
+
+### One-Command Start:
+
+**macOS/Linux:**
+```bash
+chmod +x quickstart.sh
+./quickstart.sh
+```
+
+**Windows:**
+```cmd
+quickstart.bat
+```
+
+**All Platforms (Python):**
+```bash
+python start.py
+```
+
+This will:
+- ✅ Set up virtual environment
+- ✅ Install all dependencies
+- ✅ Create configuration files
+- ✅ Initialize database
+- ✅ Start the web server
+- ✅ Open your browser automatically
+
+**That's it!** Your app will be running at http://localhost:5000
+
+---
+
+## 🚀 Manual Installation
 
 ### Prerequisites
 
@@ -99,9 +131,17 @@ cp .env.example .env
 python -c "from backend.app import app; from backend.models import db; app.app_context().push(); db.create_all()"
 ```
 
-## ⚡ Quick Start
+## 🏃 Running the Application
 
 ### Start the Web Application
+
+The easiest way is to use `python run.py`:
+
+```bash
+python run.py
+```
+
+Alternatively, you can use Flask directly:
 
 ```bash
 # Set Flask app
@@ -111,7 +151,7 @@ export FLASK_APP=backend.app:app  # On Windows: set FLASK_APP=backend.app:app
 flask run
 ```
 
-Then open your browser to `http://localhost:5000` and access the frontend at `frontend/public/index.html`.
+Then open your browser to `http://localhost:5000`.
 
 ### Using Docker
 
