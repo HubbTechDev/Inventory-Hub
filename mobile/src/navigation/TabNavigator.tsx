@@ -72,7 +72,7 @@ export const TabNavigator = () => {
         name="Scrape"
         component={ScrapeScreen}
         options={{
-          title: 'Scrape',
+          title: 'Upload',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="spider-web" size={size} color={color} />
           ),

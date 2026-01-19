@@ -77,12 +77,12 @@ npm start
 ### 3. Add Inventory
 You can add inventory in two ways:
 
-**Method 1: Scrape from marketplace**
-- Tap "Scrape" tab
+**Method 1: Upload from marketplace**
+- Tap "Upload" tab
 - Enter a Mercari or Depop search URL
 - Select merchant type
 - Set number of pages (start with 1)
-- Tap "Start Scraping"
+- Tap "Start Upload"
 - Check "History" tab for job status
 
 **Method 2: Manual entry** (via API)
@@ -96,7 +96,7 @@ You can add inventory in two ways:
 - Sort by price/date
 - Tap item for details
 
-## Common URLs for Scraping
+## Common URLs for Upload
 
 **Mercari:**
 ```
@@ -183,15 +183,15 @@ After setup, test these features:
 - [ ] Search inventory
 - [ ] Filter by merchant/condition
 - [ ] View item details
-- [ ] Start a scraping job
-- [ ] View scraping history
+- [ ] Start an upload job
+- [ ] View upload history
 - [ ] Check profile info
 - [ ] Update API URL in settings
 - [ ] Logout and login again
 
 ## Performance Tips
 
-1. **Start Small:** Begin with 1-2 pages when scraping
+1. **Start Small:** Begin with 1-2 pages when uploading
 2. **Use Filters:** Narrow down inventory lists with filters
 3. **Refresh Wisely:** Pull-to-refresh updates data but uses API quota
 4. **Cache Aware:** App caches data, but refreshes on navigation

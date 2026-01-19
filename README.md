@@ -42,7 +42,7 @@ A native iOS/Android mobile application built with React Native and Expo. Featur
 - 📊 **Full Feature Parity**: Access all inventory management features on mobile
 - 📈 **Charts & Analytics**: Visual insights into your inventory
 - 🔄 **Real-time Sync**: Pull-to-refresh for latest data
-- 🚀 **Scraping on the Go**: Trigger and monitor scraping jobs from your phone
+- 🚀 **Upload on the Go**: Trigger and monitor upload jobs from your phone
 
 See [mobile/README.md](mobile/README.md) for iOS/Android app setup instructions.
 

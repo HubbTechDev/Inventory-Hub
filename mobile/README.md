@@ -15,7 +15,7 @@ A complete React Native (Expo) mobile application for managing your e-commerce i
 ### Dashboard
 - **Inventory Statistics** - Total items, value, stock status
 - **Visual Analytics** - Pie and bar charts for merchants, conditions, categories
-- **Scraping Job Stats** - Track successful, failed, and pending jobs
+- **Upload Job Stats** - Track successful, failed, and pending jobs
 - **Quick Actions** - Fast access to common tasks
 
 ### Inventory Management
@@ -28,7 +28,7 @@ A complete React Native (Expo) mobile application for managing your e-commerce i
 ### Web Scraping
 - **Multi-Platform Support** - Mercari, Depop, Generic e-commerce sites
 - **Configurable Jobs** - Set URL, merchant, and page count
-- **Job History** - View all scraping jobs with status
+- **Job History** - View all upload jobs with status
 - **Real-time Status** - Track job progress and errors
 
 ### Profile & Settings

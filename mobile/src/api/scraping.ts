@@ -8,11 +8,17 @@ import {
 } from '../types';
 
 export const scrapingApi = {
+  /**
+   * Start a new upload/scraping job
+   */
   async startScrape(request: ScrapeRequest): Promise<ScrapeResponse> {
     const response = await apiClient.post('/api/scraping/scrape', request);
     return response.data;
   },
 
+  /**
+   * Get list of upload/scraping jobs
+   */
   async getJobs(
     page: number = 1,
     perPage: number = 20,
@@ -25,6 +31,9 @@ export const scrapingApi = {
     return response.data;
   },
 
+  /**
+   * Get details of a specific upload/scraping job
+   */
   async getJob(id: number): Promise<ScrapingJobWithItems> {
     const response = await apiClient.get(`/api/scraping/jobs/${id}`);
     return response.data;

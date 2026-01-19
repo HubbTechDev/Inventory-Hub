@@ -45,9 +45,9 @@ export const ScrapeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>Start Scraping</Text>
+          <Text style={styles.title}>Upload Inventory</Text>
           <Text style={styles.subtitle}>
-            Enter a URL from a supported marketplace to scrape product listings.
+            Enter a URL from a supported marketplace to upload product listings.
           </Text>
         </View>
 
@@ -124,7 +124,7 @@ export const ScrapeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <Text style={styles.errorText}>{errors.max_pages}</Text>
               )}
               <Text style={styles.helperText}>
-                Max {Config.MAX_SCRAPING_PAGES} pages. More pages = longer scraping time.
+                Max {Config.MAX_SCRAPING_PAGES} pages. More pages = longer upload time.
               </Text>
 
               <View style={styles.infoBox}>
@@ -144,7 +144,7 @@ export const ScrapeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 style={styles.button}
                 icon="play"
               >
-                Start Scraping
+                Start Upload
               </Button>
 
               <Button
@@ -153,7 +153,7 @@ export const ScrapeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 disabled={loading}
                 style={styles.linkButton}
               >
-                View Scraping History
+                View Upload History
               </Button>
             </View>
           )}
@@ -164,7 +164,7 @@ export const ScrapeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.tipsText}>
             • Use search result pages for best results{'\n'}
             • Start with 1-2 pages to test{'\n'}
-            • Check scraping history for job status{'\n'}
+            • Check upload history for job status{'\n'}
             • Failed jobs may indicate unsupported site structure
           </Text>
         </View>

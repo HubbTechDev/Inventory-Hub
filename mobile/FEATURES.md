@@ -29,7 +29,7 @@
   - Failed jobs
   - Pending jobs
 - ✅ Quick action buttons
-  - Start new scrape
+  - Start new upload
   - View inventory
 - ✅ Pull-to-refresh functionality
 - ✅ Loading states
@@ -81,7 +81,7 @@
 - ✅ Error handling
 
 ### 4. Web Scraping
-- ✅ Scraping job creation form
+- ✅ Upload job creation form
   - URL input with validation
   - Merchant selection dropdown
     - Mercari
@@ -98,7 +98,7 @@
 - ✅ Loading states during submission
 
 ### 5. Scraping History
-- ✅ List all scraping jobs
+- ✅ List all upload jobs
 - ✅ Pagination support
 - ✅ Pull-to-refresh
 - ✅ Job information display
@@ -150,7 +150,7 @@
 - ✅ Bottom tab navigation
   - Dashboard tab
   - Inventory tab
-  - Scrape tab
+  - Upload tab
   - History tab
   - Profile tab
 - ✅ Stack navigation for details
@@ -320,7 +320,7 @@
 - ✅ Dashboard screen
 - ✅ Inventory list screen
 - ✅ Inventory detail screen
-- ✅ Scrape screen
+- ✅ Upload screen
 - ✅ History screen
 - ✅ Profile screen
 

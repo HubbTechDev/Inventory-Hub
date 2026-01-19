@@ -140,9 +140,9 @@ export const ScrapingHistoryScreen: React.FC<{ navigation: any }> = ({ navigatio
     if (loading) return null;
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No scraping jobs found</Text>
+        <Text style={styles.emptyText}>No upload jobs found</Text>
         <Button mode="outlined" onPress={() => navigation.navigate('Scrape')}>
-          Start New Scrape
+          Start New Upload
         </Button>
       </View>
     );
@@ -160,7 +160,7 @@ export const ScrapingHistoryScreen: React.FC<{ navigation: any }> = ({ navigatio
   };
 
   if (loading) {
-    return <LoadingSpinner message="Loading scraping history..." />;
+    return <LoadingSpinner message="Loading upload history..." />;
   }
 
   return (
