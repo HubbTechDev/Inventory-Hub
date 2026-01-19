@@ -52,3 +52,7 @@ scraped_data/
 # OS
 .DS_Store
 Thumbs.db
+venv/
+instance/
+*.db
+__pycache__/

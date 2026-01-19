@@ -1,9 +1,10 @@
 # Inventory-Hub
 
-A flexible web scraping application designed to extract inventory data from merchant app listings that don't have public APIs. This tool allows you to scrape product information from various e-commerce platforms and export the data in JSON or CSV format.
+A comprehensive inventory management platform with web scraping capabilities and a complete REST API backend. Extract inventory data from merchant app listings (Mercari, Depop, and more) and manage your inventory through a powerful Flask API.
 
 ## Features
 
+### Web Scraping
 - 🔍 **Flexible Web Scraping**: Scrape inventory data from various merchant platforms
 - 🛍️ **Specialized Scrapers**: Built-in support for **Mercari** and **Depop** marketplaces
 - 🎯 **Customizable Selectors**: Configure CSS selectors for different website structures
@@ -13,6 +14,15 @@ A flexible web scraping application designed to extract inventory data from merc
 - 🛡️ **Robust Error Handling**: Built-in retry logic and error recovery
 - 📝 **Structured Data Models**: Clean, structured inventory item data
 
+### Backend API
+- 🔐 **JWT Authentication**: Secure user authentication and authorization
+- 📦 **Inventory Management**: Complete CRUD operations for inventory items
+- 🕷️ **Scraping Jobs**: Automated scraping with job tracking and status
+- 📊 **Dashboard Statistics**: Comprehensive analytics and insights
+- 🔍 **Advanced Search**: Full-text search, filtering, and pagination
+- 🌐 **CORS Enabled**: Ready for mobile and web app integration
+- 💾 **SQLite/PostgreSQL**: Flexible database support
+
 ## Installation
 
 ### Prerequisites
@@ -20,7 +30,7 @@ A flexible web scraping application designed to extract inventory data from merc
 - Python 3.8 or higher
 - Chrome/Chromium browser (for Selenium support)
 
-### Setup
+### Web Scraper Setup
 
 1. Clone the repository:
 ```bash
@@ -44,6 +54,37 @@ pip install -r requirements.txt
 cp .env.example .env
 # Edit .env with your preferred settings
 ```
+
+### Backend API Setup
+
+For the complete Flask REST API backend:
+
+1. Navigate to backend directory:
+```bash
+cd backend
+```
+
+2. Run the automated setup:
+```bash
+./setup.sh
+```
+
+Or manually:
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+3. Start the API server:
+```bash
+./start_server.sh
+# Or: python app.py
+```
+
+The API will be available at `http://localhost:5000`
+
+**See [backend/README.md](backend/README.md) for complete API documentation.**
 
 ## Usage
 
@@ -280,6 +321,95 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is open source and available under the MIT License.
+
+## Backend API
+
+The repository includes a complete Flask REST API for managing inventory and scraping jobs. Key features:
+
+### API Endpoints
+
+**Authentication:**
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - Login with JWT tokens
+- `GET /api/auth/me` - Get current user
+- `POST /api/auth/refresh` - Refresh access token
+
+**Inventory Management:**
+- `GET /api/inventory` - List items (with search, filters, pagination)
+- `GET /api/inventory/:id` - Get single item
+- `POST /api/inventory` - Create item
+- `PUT /api/inventory/:id` - Update item
+- `DELETE /api/inventory/:id` - Delete item
+
+**Scraping Jobs:**
+- `POST /api/scraping/scrape` - Start scraping job
+- `GET /api/scraping/jobs` - List jobs
+- `GET /api/scraping/jobs/:id` - Get job details
+
+**Statistics:**
+- `GET /api/stats` - Dashboard statistics
+
+### Quick Start
+
+```bash
+# Start the API server
+cd backend
+./setup.sh
+./start_server.sh
+```
+
+### API Demo
+
+Run the interactive demo to see all API endpoints in action:
+
+```bash
+cd backend
+source venv/bin/activate
+python api_demo.py
+```
+
+### Testing with Postman
+
+Import the Postman collection for easy API testing:
+1. Open Postman
+2. Import `backend/Inventory_Hub_API.postman_collection.json`
+3. Start making requests!
+
+### Complete Documentation
+
+See [backend/README.md](backend/README.md) for:
+- Complete API documentation
+- Request/response examples
+- Database schema
+- Authentication flow
+- Production deployment guide
+
+## Project Structure
+
+```
+Inventory-Hub/
+├── backend/                    # Flask REST API
+│   ├── routes/                # API route handlers
+│   │   ├── auth.py           # Authentication endpoints
+│   │   ├── inventory.py      # Inventory management
+│   │   ├── scraping.py       # Scraping jobs
+│   │   └── stats.py          # Statistics
+│   ├── app.py                # Flask application
+│   ├── models.py             # Database models
+│   ├── config.py             # Configuration
+│   ├── requirements.txt      # Backend dependencies
+│   ├── api_demo.py           # Interactive API demo
+│   ├── test_setup.py         # Setup validation
+│   └── README.md             # API documentation
+├── models.py                  # Scraper data models
+├── scraper.py                # Base scraper class
+├── mercari_scraper.py        # Mercari scraper
+├── depop_scraper.py          # Depop scraper
+├── generic_scraper.py        # Generic e-commerce scraper
+├── main.py                   # CLI interface
+├── config.py                 # Scraper configuration
+└── requirements.txt          # Scraper dependencies
+```
 
 ## Disclaimer
 
