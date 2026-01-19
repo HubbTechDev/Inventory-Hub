@@ -91,7 +91,7 @@ class InventoryItem(db.Model):
         if self.custom_fields:
             try:
                 custom = json.loads(self.custom_fields)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 custom = None
         
         return {

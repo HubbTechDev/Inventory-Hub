@@ -9,6 +9,10 @@ from datetime import datetime
 import sys
 import os
 import json
+import logging
+import traceback
+
+logger = logging.getLogger(__name__)
 
 # Add parent directory to path to import scrapers
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
@@ -101,9 +105,17 @@ def start_scraping():
                     image_url=scraped_item.image_url,
                     product_url=scraped_item.product_url,
                     merchant=scraped_item.merchant,
-                    in_stock=scraped_item.in_stock,
-                    scraped_at=datetime.fromisoformat(scraped_item.scraped_at) if scraped_item.scraped_at else datetime.utcnow()
+                    in_stock=scraped_item.in_stock
                 )
+                
+                # Parse scraped_at timestamp safely
+                if scraped_item.scraped_at:
+                    try:
+                        db_item.scraped_at = datetime.fromisoformat(scraped_item.scraped_at)
+                    except (ValueError, TypeError):
+                        db_item.scraped_at = datetime.utcnow()
+                else:
+                    db_item.scraped_at = datetime.utcnow()
                 
                 # Handle custom fields
                 if scraped_item.custom_fields:
@@ -117,8 +129,21 @@ def start_scraping():
             job.items_scraped = items_count
             job.completed_at = datetime.utcnow()
             
+        except ImportError as e:
+            error_msg = f"Scraper import error: {str(e)}"
+            logger.error(f"Failed to import scraper: {traceback.format_exc()}")
+            job.status = 'failed'
+            job.error_message = error_msg
+            job.completed_at = datetime.utcnow()
+        except (ConnectionError, TimeoutError) as e:
+            error_msg = f"Network error during scraping: {str(e)}"
+            logger.error(f"Scraping network error: {traceback.format_exc()}")
+            job.status = 'failed'
+            job.error_message = error_msg
+            job.completed_at = datetime.utcnow()
         except Exception as e:
-            error_msg = str(e)
+            error_msg = f"Unexpected error: {str(e)}"
+            logger.error(f"Scraping job {job.id} failed with exception: {traceback.format_exc()}")
             job.status = 'failed'
             job.error_message = error_msg
             job.completed_at = datetime.utcnow()
