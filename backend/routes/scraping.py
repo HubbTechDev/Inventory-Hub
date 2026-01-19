@@ -5,7 +5,7 @@ Scraping job routes.
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from backend.models import db, ScrapingJob, InventoryItem
-from datetime import datetime
+from datetime import datetime, timezone
 import sys
 import os
 import json
@@ -14,8 +14,12 @@ import traceback
 
 logger = logging.getLogger(__name__)
 
-# Add parent directory to path to import scrapers
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+# NOTE: Import scrapers from parent directory
+# The scrapers (mercari_scraper, depop_scraper, generic_scraper) are in the project root.
+# For production, consider moving scrapers into backend/ or installing as a package.
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
 from mercari_scraper import MercariScraper
 from depop_scraper import DepopScraper
@@ -111,8 +115,14 @@ def start_scraping():
                 # Parse scraped_at timestamp safely
                 if scraped_item.scraped_at:
                     try:
-                        db_item.scraped_at = datetime.fromisoformat(scraped_item.scraped_at)
-                    except (ValueError, TypeError):
+                        # Parse ISO format datetime string
+                        dt = datetime.fromisoformat(scraped_item.scraped_at.replace('Z', '+00:00'))
+                        # Convert to UTC naive datetime for consistency
+                        if dt.tzinfo is not None:
+                            db_item.scraped_at = dt.astimezone(timezone.utc).replace(tzinfo=None)
+                        else:
+                            db_item.scraped_at = dt
+                    except (ValueError, TypeError, AttributeError):
                         db_item.scraped_at = datetime.utcnow()
                 else:
                     db_item.scraped_at = datetime.utcnow()
