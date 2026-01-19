@@ -25,8 +25,31 @@ A full-featured web application for scraping, managing, and analyzing inventory 
 - 🔒 **Secure**: Password hashing, JWT authentication, input validation
 - 📝 **Job Tracking**: Monitor scraping jobs and their status
 
+## 🏗️ Architecture
+
+Inventory-Hub consists of:
+- **Backend API** (`/backend`) - Flask REST API with JWT authentication
+- **Web Frontend** (`/frontend`) - Browser-based dashboard
+- **Mobile App** (`/mobile`) - React Native iOS/Android app
+
+All frontends connect to the same backend API.
+
+## 📱 Mobile App
+
+A native iOS/Android mobile application built with React Native and Expo. Features include:
+- 📲 **Cross-Platform**: Single codebase for iOS and Android
+- 🔐 **JWT Authentication**: Secure login with token refresh
+- 📊 **Full Feature Parity**: Access all inventory management features on mobile
+- 📈 **Charts & Analytics**: Visual insights into your inventory
+- 🔄 **Real-time Sync**: Pull-to-refresh for latest data
+- 🚀 **Scraping on the Go**: Trigger and monitor scraping jobs from your phone
+
+See [mobile/README.md](mobile/README.md) for iOS/Android app setup instructions.
+
 ## 📋 Table of Contents
 
+- [Architecture](#architecture)
+- [Mobile App](#mobile-app)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Web Application Usage](#web-application-usage)
