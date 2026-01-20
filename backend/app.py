@@ -50,6 +50,47 @@ def create_app(config_name='default'):
     def health_check():
         return {'status': 'healthy'}, 200
     
+    # Debug route to verify paths
+    @app.route('/debug/paths')
+    def debug_paths():
+        """Debug route to show file paths"""
+        frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'public')
+        files = []
+        if os.path.exists(frontend_dir):
+            files = os.listdir(frontend_dir)
+        return {
+            'frontend_dir': frontend_dir,
+            'exists': os.path.exists(frontend_dir),
+            'files': files,
+            'index_exists': os.path.isfile(os.path.join(frontend_dir, 'index.html'))
+        }
+    
+    # Serve frontend static files
+    from flask import send_from_directory
+    
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_frontend(path):
+        """Serve frontend static files"""
+        frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'public')
+        
+        # If path is empty, serve index.html
+        if path == '':
+            return send_from_directory(frontend_dir, 'index.html')
+        
+        # If it's an API route, let it fall through to 404 handler
+        if path.startswith('api/'):
+            from flask import abort
+            abort(404)
+        
+        # If path exists as a file, serve it
+        file_path = os.path.join(frontend_dir, path)
+        if os.path.isfile(file_path):
+            return send_from_directory(frontend_dir, path)
+        
+        # Otherwise, serve index.html for client-side routing (SPA behavior)
+        return send_from_directory(frontend_dir, 'index.html')
+    
     # Error handlers
     @app.errorhandler(404)
     def not_found(error):
