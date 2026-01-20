@@ -16,6 +16,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Allowed file extensions for frontend static files (security measure)
+ALLOWED_EXTENSIONS = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'}
+
+
+def get_frontend_dir():
+    """Get the frontend public directory path."""
+    return os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'public')
+
 
 def create_app(config_name='default'):
     """Application factory."""
@@ -54,7 +62,7 @@ def create_app(config_name='default'):
     @app.route('/debug/paths')
     def debug_paths():
         """Debug route to show file paths"""
-        frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'public')
+        frontend_dir = get_frontend_dir()
         files = []
         if os.path.exists(frontend_dir):
             files = os.listdir(frontend_dir)
@@ -66,14 +74,11 @@ def create_app(config_name='default'):
         }
     
     # Serve frontend static files
-    # Allowed file extensions for security
-    ALLOWED_EXTENSIONS = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'}
-    
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve_frontend(path):
         """Serve frontend static files"""
-        frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'public')
+        frontend_dir = get_frontend_dir()
         
         # If path is empty, serve index.html
         if path == '':
@@ -81,10 +86,6 @@ def create_app(config_name='default'):
         
         # If it's an API route, let it fall through to 404 handler
         if path.startswith('api/'):
-            abort(404)
-        
-        # If it's a health or debug route, let it fall through
-        if path in ('health', 'debug/paths'):
             abort(404)
         
         # If path exists as a file with allowed extension, serve it
