@@ -2,7 +2,7 @@
 Flask application for Inventory Hub.
 """
 
-from flask import Flask
+from flask import Flask, send_from_directory, abort
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
@@ -66,7 +66,8 @@ def create_app(config_name='default'):
         }
     
     # Serve frontend static files
-    from flask import send_from_directory
+    # Allowed file extensions for security
+    ALLOWED_EXTENSIONS = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'}
     
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
@@ -80,13 +81,21 @@ def create_app(config_name='default'):
         
         # If it's an API route, let it fall through to 404 handler
         if path.startswith('api/'):
-            from flask import abort
             abort(404)
         
-        # If path exists as a file, serve it
+        # If it's a health or debug route, let it fall through
+        if path in ('health', 'debug/paths'):
+            abort(404)
+        
+        # If path exists as a file with allowed extension, serve it
         file_path = os.path.join(frontend_dir, path)
         if os.path.isfile(file_path):
-            return send_from_directory(frontend_dir, path)
+            # Security: Only serve files with allowed extensions
+            _, ext = os.path.splitext(path)
+            if ext.lower() in ALLOWED_EXTENSIONS:
+                return send_from_directory(frontend_dir, path)
+            # If extension not allowed, return 404
+            abort(404)
         
         # Otherwise, serve index.html for client-side routing (SPA behavior)
         return send_from_directory(frontend_dir, 'index.html')
