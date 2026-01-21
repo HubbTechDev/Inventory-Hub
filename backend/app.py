@@ -2,7 +2,7 @@
 Flask application for Inventory Hub.
 """
 
-from flask import Flask
+from flask import Flask, send_from_directory, abort
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
@@ -15,6 +15,14 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Allowed file extensions for frontend static files (security measure)
+ALLOWED_EXTENSIONS = {'.html', '.css', '.js', '.json', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'}
+
+
+def get_frontend_dir():
+    """Get the frontend public directory path."""
+    return os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend', 'public')
 
 
 def create_app(config_name='default'):
@@ -49,6 +57,49 @@ def create_app(config_name='default'):
     @app.route('/health')
     def health_check():
         return {'status': 'healthy'}, 200
+    
+    # Debug route to verify paths
+    @app.route('/debug/paths')
+    def debug_paths():
+        """Debug route to show file paths"""
+        frontend_dir = get_frontend_dir()
+        files = []
+        if os.path.exists(frontend_dir):
+            files = os.listdir(frontend_dir)
+        return {
+            'frontend_dir': frontend_dir,
+            'exists': os.path.exists(frontend_dir),
+            'files': files,
+            'index_exists': os.path.isfile(os.path.join(frontend_dir, 'index.html'))
+        }
+    
+    # Serve frontend static files
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_frontend(path):
+        """Serve frontend static files"""
+        frontend_dir = get_frontend_dir()
+        
+        # If path is empty, serve index.html
+        if path == '':
+            return send_from_directory(frontend_dir, 'index.html')
+        
+        # If it's an API route, let it fall through to 404 handler
+        if path.startswith('api/'):
+            abort(404)
+        
+        # If path exists as a file with allowed extension, serve it
+        file_path = os.path.join(frontend_dir, path)
+        if os.path.isfile(file_path):
+            # Security: Only serve files with allowed extensions
+            _, ext = os.path.splitext(path)
+            if ext.lower() in ALLOWED_EXTENSIONS:
+                return send_from_directory(frontend_dir, path)
+            # If extension not allowed, return 404
+            abort(404)
+        
+        # Otherwise, serve index.html for client-side routing (SPA behavior)
+        return send_from_directory(frontend_dir, 'index.html')
     
     # Error handlers
     @app.errorhandler(404)
