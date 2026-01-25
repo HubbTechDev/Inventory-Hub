@@ -17,21 +17,21 @@ export const InventoryDetailScreen: React.FC<{ route: any; navigation: any }> = 
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        setLoading(true);
+        const data = await inventoryApi.getItem(itemId);
+        setItem(data);
+        setError('');
+      } catch (err: any) {
+        setError(err.message || 'Failed to load item');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
     fetchItem();
   }, [itemId]);
-
-  const fetchItem = async () => {
-    try {
-      setLoading(true);
-      const data = await inventoryApi.getItem(itemId);
-      setItem(data);
-      setError('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to load item');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async () => {
     try {

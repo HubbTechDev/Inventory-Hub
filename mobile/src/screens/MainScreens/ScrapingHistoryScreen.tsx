@@ -53,9 +53,9 @@ export const ScrapingHistoryScreen: React.FC<{ navigation: any }> = ({ navigatio
     }
   };
 
-  const handleJobPress = (job: ScrapingJob) => {
-    // Could navigate to job details screen
-    console.log('Job pressed:', job.id);
+  const handleJobPress = (_job: ScrapingJob) => {
+    // Could navigate to job details screen in the future
+    // For now, this is a placeholder for future functionality
   };
 
   const getStatusColor = (status: string) => {

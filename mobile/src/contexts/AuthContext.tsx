@@ -48,13 +48,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const currentUser = await authApi.getCurrentUser();
           setUser(currentUser);
           await storage.setUser(currentUser);
-        } catch (error) {
+        } catch {
           // Token might be expired, user will need to login
-          console.log('Failed to refresh user data:', error);
         }
       }
-    } catch (error) {
-      console.error('Error loading stored user:', error);
+    } catch {
+      // Error loading stored user - will show login screen
     } finally {
       setLoading(false);
     }
@@ -89,16 +88,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = async () => {
-    try {
-      // Clear all stored data
-      await storage.clearTokens();
-      await storage.clearUser();
-      
-      setUser(null);
-    } catch (error) {
-      console.error('Error during logout:', error);
-      throw error;
-    }
+    // Clear all stored data
+    await storage.clearTokens();
+    await storage.clearUser();
+    
+    setUser(null);
   };
 
   const refreshUser = async () => {
@@ -107,7 +101,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(currentUser);
       await storage.setUser(currentUser);
     } catch (error) {
-      console.error('Error refreshing user:', error);
+      // Error refreshing user data
       throw new Error(handleApiError(error));
     }
   };

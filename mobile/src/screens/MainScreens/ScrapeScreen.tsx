@@ -28,7 +28,7 @@ export const ScrapeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       setSuccess(response.message);
       
       // Navigate to history after a short delay
-      setTimeout(() => {
+      global.setTimeout(() => {
         navigation.navigate('History');
       }, 2000);
     } catch (err: any) {

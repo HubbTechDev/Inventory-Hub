@@ -63,6 +63,7 @@ export const isValidEmail = (email: string): boolean => {
 
 export const isValidUrl = (url: string): boolean => {
   try {
+    // eslint-disable-next-line no-undef
     new URL(url);
     return true;
   } catch {

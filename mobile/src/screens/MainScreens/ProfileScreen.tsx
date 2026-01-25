@@ -30,7 +30,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = () => {
       setApiBaseUrl(apiUrl);
       setSuccess('API URL updated successfully');
       setShowApiSettings(false);
-    } catch (err: any) {
+    } catch {
       setError('Failed to update API URL');
     }
   };

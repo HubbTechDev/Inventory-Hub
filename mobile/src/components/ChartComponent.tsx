@@ -32,7 +32,7 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ title, data, typ
     datasets: [
       {
         data: data.map((item) => item.count),
-        color: (opacity = 1) => Colors.primary,
+        color: (_opacity = 1) => Colors.primary,
       },
     ],
   };
