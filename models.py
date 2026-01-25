@@ -3,7 +3,7 @@ Data models for inventory items.
 """
 
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 import json
 import csv
@@ -32,7 +32,7 @@ class InventoryItem:
     def __post_init__(self):
         """Set scraped_at timestamp if not provided."""
         if self.scraped_at is None:
-            self.scraped_at = datetime.utcnow().isoformat()
+            self.scraped_at = datetime.now(timezone.utc).isoformat()
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert the inventory item to a dictionary."""

@@ -4,7 +4,7 @@ Scraper service for handling scraping tasks.
 
 import sys
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 # Add parent directory to path to import scrapers
@@ -32,7 +32,7 @@ def start_scraping_task(job_id, user_id, url, merchant, pages=1):
             return None
         
         job.status = 'running'
-        job.started_at = datetime.utcnow()
+        job.started_at = datetime.now(timezone.utc)
         db.session.commit()
         
         # Initialize appropriate scraper
@@ -77,7 +77,7 @@ def start_scraping_task(job_id, user_id, url, merchant, pages=1):
                     merchant=item.merchant,
                     condition=item.condition,
                     in_stock=item.in_stock,
-                    scraped_at=datetime.utcnow(),
+                    scraped_at=datetime.now(timezone.utc),
                     custom_fields=item.custom_fields
                 )
                 db.session.add(db_item)
@@ -85,7 +85,7 @@ def start_scraping_task(job_id, user_id, url, merchant, pages=1):
             
             # Update job as completed
             job.status = 'completed'
-            job.completed_at = datetime.utcnow()
+            job.completed_at = datetime.now(timezone.utc)
             job.items_scraped = items_saved
             
             db.session.commit()
@@ -96,7 +96,7 @@ def start_scraping_task(job_id, user_id, url, merchant, pages=1):
             logger.error(f"Scraping error for job {job_id}: {scrape_error}")
             job.status = 'failed'
             job.error_message = str(scrape_error)
-            job.completed_at = datetime.utcnow()
+            job.completed_at = datetime.now(timezone.utc)
             db.session.commit()
             
         finally:
@@ -114,6 +114,6 @@ def start_scraping_task(job_id, user_id, url, merchant, pages=1):
         if job:
             job.status = 'failed'
             job.error_message = str(e)
-            job.completed_at = datetime.utcnow()
+            job.completed_at = datetime.now(timezone.utc)
             db.session.commit()
         return None

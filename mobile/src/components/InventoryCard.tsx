@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Card, Text, Chip, IconButton } from 'react-native-paper';
 import { InventoryItem } from '../types';
-import { formatCurrency, truncateText } from '../utils/formatters';
+import { formatCurrency } from '../utils/formatters';
 import { Colors } from '../constants/Colors';
 
 interface InventoryCardProps {
