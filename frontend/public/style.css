@@ -66,6 +66,7 @@ body {
 .auth-container h1 {
     text-align: center;
     margin-bottom: 30px;
+    color: var(--primary-color);
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -244,6 +245,7 @@ body {
 .nav-brand {
     font-size: 26px;
     font-weight: 700;
+    color: var(--primary-color);
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -323,6 +325,7 @@ body {
 .stat-value {
     font-size: 36px;
     font-weight: 700;
+    color: var(--primary-color);
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -405,6 +408,7 @@ body {
 .item-price {
     font-size: 20px;
     font-weight: 700;
+    color: var(--primary-color);
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -625,3 +629,14 @@ tr:hover {
 .stat-card:nth-child(2) { animation-delay: 0.2s; }
 .stat-card:nth-child(3) { animation-delay: 0.3s; }
 .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
