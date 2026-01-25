@@ -8,6 +8,13 @@ module.exports = {
       jsx: true,
     },
   },
+  globals: {
+    setTimeout: 'readonly',
+    clearTimeout: 'readonly',
+    setInterval: 'readonly',
+    clearInterval: 'readonly',
+    URL: 'readonly',
+  },
   rules: {
     'no-console': 'warn',
   },

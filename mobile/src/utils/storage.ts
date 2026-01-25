@@ -12,7 +12,7 @@ export const storage = {
       const jsonValue = await AsyncStorage.getItem(key);
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch {
-      // Error reading from storage
+      // Return null on error to gracefully handle corrupted data
       return null;
     }
   },
