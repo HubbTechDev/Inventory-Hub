@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { PieChart, BarChart } from 'react-native-chart-kit';
-import { Colors } from '../constants/Colors';
+import { Colors, Theme } from '../constants/Colors';
 
 interface ChartData {
   name: string;
@@ -17,14 +17,14 @@ interface ChartComponentProps {
 }
 
 export const ChartComponent: React.FC<ChartComponentProps> = ({ title, data, type }) => {
-  const screenWidth = Dimensions.get('window').width - 32;
+  const screenWidth = Dimensions.get('window').width - 40;
 
   const chartData = data.map((item, index) => ({
     name: item.name,
     population: item.count,
     color: item.color || Colors.chartColors[index % Colors.chartColors.length],
-    legendFontColor: Colors.onSurface,
-    legendFontSize: 12,
+    legendFontColor: Colors.textPrimary,
+    legendFontSize: 13,
   }));
 
   const barData = {
@@ -32,6 +32,7 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ title, data, typ
     datasets: [
       {
         data: data.map((item) => item.count),
+        color: (opacity = 1) => Colors.primary,
       },
     ],
   };
@@ -40,17 +41,21 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ title, data, typ
     backgroundColor: Colors.surface,
     backgroundGradientFrom: Colors.surface,
     backgroundGradientTo: Colors.surface,
-    color: (opacity = 1) => `rgba(98, 0, 238, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    color: (opacity = 1) => `rgba(79, 70, 229, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(17, 24, 39, ${opacity})`,
     strokeWidth: 2,
     barPercentage: 0.7,
     useShadowColorFromDataset: false,
     decimalPlaces: 0,
+    propsForLabels: {
+      fontSize: 12,
+      fontWeight: '600',
+    },
   };
 
   if (data.length === 0) {
     return (
-      <Card style={styles.card}>
+      <Card style={styles.card} mode="elevated">
         <Card.Content>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.noData}>No data available</Text>
@@ -60,7 +65,7 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ title, data, typ
   }
 
   return (
-    <Card style={styles.card}>
+    <Card style={styles.card} mode="elevated">
       <Card.Content>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.chartContainer}>
@@ -96,21 +101,26 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ title, data, typ
 const styles = StyleSheet.create({
   card: {
     marginVertical: 8,
-    marginHorizontal: 16,
-    elevation: 2,
+    marginHorizontal: 20,
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
+    ...Theme.shadows.medium,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginBottom: 16,
-    color: Colors.onSurface,
+    color: Colors.textPrimary,
+    letterSpacing: -0.3,
   },
   chartContainer: {
     alignItems: 'center',
+    paddingVertical: 8,
   },
   noData: {
     textAlign: 'center',
-    color: Colors.placeholder,
-    paddingVertical: 32,
+    color: Colors.textSecondary,
+    paddingVertical: 40,
+    fontSize: 15,
   },
 });

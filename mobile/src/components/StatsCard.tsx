@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text } from 'react-native-paper';
-import { Colors } from '../constants/Colors';
+import { Colors, Theme } from '../constants/Colors';
 
 interface StatsCardProps {
   title: string;
@@ -19,11 +19,11 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   color = Colors.primary,
 }) => {
   return (
-    <Card style={styles.card}>
+    <Card style={styles.card} mode="elevated">
       <Card.Content style={styles.content}>
         {icon && (
-          <View style={[styles.iconContainer, { backgroundColor: color + '20' }]}>
-            <Text style={{ fontSize: 32, color }}>
+          <View style={[styles.iconContainer, { backgroundColor: color + '15' }]}>
+            <Text style={{ fontSize: 36, color }}>
               {icon}
             </Text>
           </View>
@@ -42,18 +42,20 @@ export const StatsCard: React.FC<StatsCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     marginVertical: 8,
-    marginHorizontal: 16,
-    elevation: 2,
+    marginHorizontal: 20,
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
+    ...Theme.shadows.medium,
   },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 20,
   },
   iconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 72,
+    height: 72,
+    borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -63,16 +65,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    color: Colors.placeholder,
-    marginBottom: 4,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+    marginBottom: 6,
+    letterSpacing: 0.3,
+    textTransform: 'uppercase',
   },
   value: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 32,
+    fontWeight: '800',
+    letterSpacing: -0.5,
   },
   subtitle: {
-    fontSize: 12,
-    color: Colors.placeholder,
-    marginTop: 4,
+    fontSize: 13,
+    color: Colors.textTertiary,
+    marginTop: 6,
+    lineHeight: 18,
   },
 });

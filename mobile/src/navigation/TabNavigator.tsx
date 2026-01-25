@@ -36,15 +36,29 @@ export const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.placeholder,
+        tabBarInactiveTintColor: Colors.textTertiary,
         tabBarStyle: {
           backgroundColor: Colors.surface,
-          borderTopColor: Colors.disabled,
+          borderTopColor: Colors.border,
+          borderTopWidth: 1,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
         },
         headerStyle: {
           backgroundColor: Colors.primary,
+          elevation: 0,
+          shadowOpacity: 0,
         },
         headerTintColor: Colors.onPrimary,
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: 18,
+        },
       }}
     >
       <Tab.Screen

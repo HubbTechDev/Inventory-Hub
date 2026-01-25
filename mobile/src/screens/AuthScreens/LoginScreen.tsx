@@ -118,40 +118,46 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 20,
+    padding: 24,
   },
   header: {
-    marginBottom: 32,
+    marginBottom: 48,
     alignItems: 'center',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 40,
+    fontWeight: '800',
     color: Colors.primary,
-    marginBottom: 8,
+    marginBottom: 12,
+    letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 16,
-    color: Colors.placeholder,
+    color: Colors.textSecondary,
     textAlign: 'center',
+    lineHeight: 24,
   },
   form: {
     width: '100%',
   },
   input: {
-    marginBottom: 8,
+    marginBottom: 16,
+    backgroundColor: Colors.surface,
   },
   errorText: {
     color: Colors.error,
-    fontSize: 12,
-    marginBottom: 8,
+    fontSize: 13,
+    marginTop: -12,
+    marginBottom: 12,
     marginLeft: 12,
   },
   button: {
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 24,
+    marginBottom: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
   },
   linkButton: {
-    marginTop: 8,
+    marginTop: 16,
   },
 });

@@ -13,14 +13,20 @@ const theme = {
     background: Colors.background,
     surface: Colors.surface,
     error: Colors.error,
-    text: Colors.onSurface,
+    text: Colors.textPrimary,
     onSurface: Colors.onSurface,
     disabled: Colors.disabled,
     placeholder: Colors.placeholder,
     backdrop: Colors.backdrop,
     notification: Colors.primary,
+    secondary: Colors.secondary,
+    onPrimary: Colors.onPrimary,
+    onSecondary: Colors.onSecondary,
   },
-  roundness: 8,
+  roundness: 12,
+  animation: {
+    scale: 1.0,
+  },
 };
 
 export default function App() {
