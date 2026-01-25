@@ -42,6 +42,10 @@ htmlcov/
 # Data files
 *.csv
 *.json
+!mobile/eas.json
+!mobile/app.json
+!mobile/package.json
+!mobile/tsconfig.json
 data/
 output/
 scraped_data/

@@ -260,24 +260,31 @@ npm run lint
 
 ## 📦 Building for Production
 
-### Android APK
+For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+### Quick Build Commands
 
 ```bash
-# Build APK
+# Android preview (APK)
 eas build --platform android --profile preview
 
-# Build AAB (for Play Store)
+# iOS preview (simulator build)
+eas build --platform ios --profile preview
+
+# Android production (for Google Play)
 eas build --platform android --profile production
-```
 
-### iOS
-
-```bash
-# Build for TestFlight/App Store
+# iOS production (for App Store)
 eas build --platform ios --profile production
 ```
 
 **Note:** You need an Expo account and EAS CLI configured. See [Expo docs](https://docs.expo.dev/build/setup/) for setup.
+
+**Important:** Before building for production:
+1. Update `eas.json` with your production API URL
+2. Replace placeholder assets (icon.png, splash.png)
+3. Run `npm run type-check` and `npm run lint`
+4. Review the [DEPLOYMENT.md](./DEPLOYMENT.md) guide
 
 ## 🐛 Troubleshooting
 
