@@ -7,7 +7,7 @@ import Config from '../../constants/Config';
 import { Colors } from '../../constants/Colors';
 import { formatDateTime } from '../../utils/formatters';
 
-export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+export const ProfileScreen: React.FC<{ navigation: any }> = () => {
   const { user, logout } = useAuth();
   const [apiUrl, setApiUrl] = useState(getApiBaseUrl());
   const [showApiSettings, setShowApiSettings] = useState(false);

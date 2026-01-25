@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { FAB, Menu, IconButton, Snackbar, Text, Button } from 'react-native-paper';
+import { Menu, IconButton, Snackbar, Text, Button } from 'react-native-paper';
 import { InventoryCard } from '../../components/InventoryCard';
 import { SearchBar } from '../../components/SearchBar';
 import { FilterModal } from '../../components/FilterModal';
@@ -23,7 +23,6 @@ export const InventoryListScreen: React.FC<{ navigation: any }> = ({ navigation 
   const [showSortMenu, setShowSortMenu] = useState(false);
   
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
   const fetchItems = useCallback(async (page = 1, isRefresh = false) => {
@@ -50,7 +49,6 @@ export const InventoryListScreen: React.FC<{ navigation: any }> = ({ navigation 
       }
       
       setCurrentPage(response.pagination.page);
-      setTotalPages(response.pagination.total_pages);
       setHasMore(response.pagination.has_next);
       setError('');
     } catch (err: any) {
@@ -163,7 +161,7 @@ export const InventoryListScreen: React.FC<{ navigation: any }> = ({ navigation 
             {Config.SORT_OPTIONS.map((option) => (
               <Menu.Item
                 key={`${option.value}-${option.order}`}
-                onPress={() => handleSort(option.value, option.order)}
+                onPress={() => handleSort(option.value, option.order as 'asc' | 'desc')}
                 title={option.label}
               />
             ))}
