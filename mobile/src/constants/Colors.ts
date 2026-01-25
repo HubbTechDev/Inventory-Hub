@@ -61,6 +61,16 @@ export const Colors = {
   gradientEnd: '#7C3AED',
 };
 
+/**
+ * Add opacity to a hex color
+ * @param color - Hex color string (e.g., '#4F46E5')
+ * @param opacity - Opacity value as percentage string (e.g., '08', '15', '20')
+ * @returns Color with opacity (e.g., '#4F46E508')
+ */
+export const withOpacity = (color: string, opacity: string): string => {
+  return `${color}${opacity}`;
+};
+
 export const Theme = {
   colors: Colors,
   roundness: 12, // Increased for modern look

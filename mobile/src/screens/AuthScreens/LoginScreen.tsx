@@ -141,14 +141,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   input: {
-    marginBottom: 16,
+    marginBottom: 12,
     backgroundColor: Colors.surface,
   },
   errorText: {
     color: Colors.error,
     fontSize: 13,
-    marginTop: -12,
-    marginBottom: 12,
+    marginTop: 4,
+    marginBottom: 8,
     marginLeft: 12,
   },
   button: {
