@@ -227,15 +227,15 @@ const styles = StyleSheet.create({
   errorText: {
     color: Colors.error,
     fontSize: 13,
-    marginTop: -12,
+    marginTop: 4,
     marginBottom: 12,
     marginLeft: 12,
   },
   helperText: {
     fontSize: 13,
     color: Colors.textTertiary,
-    marginTop: -12,
-    marginBottom: 20,
+    marginTop: 4,
+    marginBottom: 16,
     marginLeft: 12,
   },
   infoBox: {
