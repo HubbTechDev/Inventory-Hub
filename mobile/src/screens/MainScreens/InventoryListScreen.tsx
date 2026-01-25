@@ -213,10 +213,14 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 8,
+    paddingRight: 12,
+    backgroundColor: Colors.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
   },
   actions: {
     flexDirection: 'row',
+    gap: 4,
   },
   footer: {
     paddingVertical: 20,
@@ -225,14 +229,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 32,
   },
   emptyList: {
     flexGrow: 1,
   },
   emptyText: {
     fontSize: 16,
-    color: Colors.placeholder,
-    marginBottom: 16,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+    marginBottom: 20,
   },
 });

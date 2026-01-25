@@ -21,11 +21,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 24,
+    backgroundColor: Colors.background,
   },
   text: {
-    marginTop: 16,
+    marginTop: 20,
     fontSize: 16,
-    color: Colors.placeholder,
+    fontWeight: '600',
+    color: Colors.textSecondary,
   },
 });

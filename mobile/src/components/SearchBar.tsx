@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { Colors } from '../constants/Colors';
+import { Colors, Theme } from '../constants/Colors';
 
 interface SearchBarProps {
   value: string;
@@ -24,6 +24,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         value={value}
         style={styles.searchbar}
         onSubmitEditing={onSubmit}
+        iconColor={Colors.textSecondary}
+        placeholderTextColor={Colors.placeholder}
       />
     </View>
   );
@@ -31,11 +33,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
   },
   searchbar: {
-    elevation: 2,
     backgroundColor: Colors.surface,
+    borderRadius: 12,
+    ...Theme.shadows.small,
   },
 });
