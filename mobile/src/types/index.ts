@@ -119,9 +119,9 @@ export interface Statistics {
     items_last_week: number;
     items_last_month: number;
   };
-  merchants: Array<{ merchant: string; count: number }>;
-  conditions: Array<{ condition: string; count: number }>;
-  categories: Array<{ category: string; count: number }>;
+  merchants: { merchant: string; count: number }[];
+  conditions: { condition: string; count: number }[];
+  categories: { category: string; count: number }[];
   scraping_jobs: {
     total_jobs: number;
     successful_jobs: number;
